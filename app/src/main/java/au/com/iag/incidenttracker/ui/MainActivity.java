@@ -43,6 +43,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        findViewById(R.id.marker_map_button).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MarkerDemoActivity.class);
+                startActivity(intent);
+            }
+        });
+
         final Button recordButton = findViewById(R.id.route_record_button);
         recordButton.setOnClickListener(new View.OnClickListener() {
             @Override

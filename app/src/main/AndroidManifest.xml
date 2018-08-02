@@ -34,12 +34,15 @@
         <activity
             android:name=".ui.MapsActivity"
             android:label="@string/title_activity_maps"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ui.PolylineDemoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.PolylineDemoActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".ui.SettingsActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".ui.MainActivity"
+        <activity
+            android:name=".ui.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -47,7 +50,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        
+
+        <service
+            android:name=".service.notification.NotificationService"
+            android:exported="false" />
+
+        <activity android:name=".ui.MarkerDemoActivity"></activity>
+
         <service android:name=".service.notification.NotificationService" android:exported="false"/>
         <service android:name=".service.route.RouteRegistrationService" android:exported="false"/>
     </application>
