@@ -22,4 +22,11 @@
         android:text="route map"
         android:layout_margin="10dp"/>
 
+    <Button
+        android:id="@+id/marker_map_button"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="marker map"
+        android:layout_margin="10dp"/>
+
 </LinearLayout>

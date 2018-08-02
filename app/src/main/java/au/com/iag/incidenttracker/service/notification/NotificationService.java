@@ -13,12 +13,12 @@ import android.util.Log;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import au.com.iag.incidenttracker.MapsActivity;
 import au.com.iag.incidenttracker.R;
 import au.com.iag.incidenttracker.model.Feature;
 import au.com.iag.incidenttracker.model.FeatureCollection;
 import au.com.iag.incidenttracker.service.transport.LiveTrafficHazardServiceCallback;
 import au.com.iag.incidenttracker.service.transport.LiveTrafficHazardServiceHelper;
+import au.com.iag.incidenttracker.ui.MapsActivity;
 
 public class NotificationService extends Service {
 

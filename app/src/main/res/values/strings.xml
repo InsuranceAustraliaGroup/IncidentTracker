@@ -2,10 +2,44 @@
     <string name="app_name">IncidentTracker</string>
     <string name="title_activity_maps">Map</string>
 
+    <string name="hue">Hue</string>
+    <string name="alpha">Alpha</string>
+    <string name="width">Width</string>
+    <string name="clickable">Clickable</string>
+    <string name="polyline_demo_label">Polylines</string>
+    <string name="polyline_demo_description">Demonstrates how to add Polylines to a map.</string>
+    <string name="drag_melbourne">Drag Melbourne</string>
+    <string name="flat">Flat</string>
+    <string name="rotation">Rotation:</string>
+    <string name="clear_map">Clear</string>
+    <string name="reset_map">Reset</string>
+    <string name="default_info_window">Default info window</string>
+    <string name="custom_info_contents">Custom info contents</string>
+    <string name="custom_info_window">Custom info window</string>
+    <string name="map_not_ready">Map is not ready yet</string>
+
 
     <!--    Permissions    -->
     <string name="permission_rationale_location">Access to the location service is required to demonstrate the \'my location\' feature, which shows your current location on the map.</string>
     <string name="location_permission_denied">This sample requires location permission to enable the \'my location\' layer. Please try again and grant access to use the location.\nIf the permission has been permanently denied, it can be enabled from the System Settings &gt; Apps &gt; \'Google Maps API Demos\'.</string>
     <string name="permission_required_toast">Location permission is required for this demo.</string>
+
+
+    <!-- Polyline/polygon styling -->
+    <string name="start_cap">Start cap</string>
+    <string name="end_cap">End cap</string>
+    <string name="joint_type">Joint Type</string>
+    <string name="pattern">Pattern</string>
+    <string name="cap_butt">Butt</string>
+    <string name="cap_square">Square</string>
+    <string name="cap_round">Round</string>
+    <string name="cap_image">Image</string>
+    <string name="joint_type_default">Default</string>
+    <string name="joint_type_bevel">Bevel</string>
+    <string name="joint_type_round">Round</string>
+    <string name="pattern_solid">Solid</string>
+    <string name="pattern_dotted">Dotted</string>
+    <string name="pattern_dashed">Dashed</string>
+    <string name="pattern_mixed">Mixed</string>
 
 </resources>
