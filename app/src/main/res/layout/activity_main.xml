@@ -22,4 +22,18 @@
         android:text="route map"
         android:layout_margin="10dp"/>
 
+    <Button
+        android:id="@+id/route_record_button"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="record route"
+        android:layout_margin="10dp"/>
+
+    <Button
+        android:id="@+id/settings_button"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:text="settings"
+        android:layout_margin="10dp"/>
+
 </LinearLayout>

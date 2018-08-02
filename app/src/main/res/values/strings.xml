@@ -8,4 +8,31 @@
     <string name="location_permission_denied">This sample requires location permission to enable the \'my location\' layer. Please try again and grant access to use the location.\nIf the permission has been permanently denied, it can be enabled from the System Settings &gt; Apps &gt; \'Google Maps API Demos\'.</string>
     <string name="permission_required_toast">Location permission is required for this demo.</string>
 
+
+
+    <string name="preference_category_notifications">Notifications</string>
+    <string name="preference_category_notification_types">Notification types</string>
+
+    <string name="preference_enable_notifications_title">Enable notifications</string>
+    <string name="preference_enable_notifications_description">Notifications about incidents will be sent to you.</string>
+
+    <string name="preference_notifications_distance_title">Incident distance</string>
+    <string name="preference_notifications_distance_description">Maximum distance of the event to be notified</string>
+
+    <string name="preference_fire_title">Fires</string>
+    <string name="preference_flood_title">Floods</string>
+    <string name="preference_incident_title">Incidents</string>
+    <string name="preference_major_event_title">Major events</string>
+    <string name="preference_roadwork_title">Roadworks</string>
+    <string name="preference_alpine_title">Alpine</string>
+
+    <string name="enable_notifications">enable_notifications</string>
+    <string name="notification_distance">notification_distance</string>
+    <string name="enable_fire_notifications">enable_fire_notifications</string>
+    <string name="enable_flood_notifications">enable_flood_notifications</string>
+    <string name="enable_alpine_notifications">enable_alpine_notifications</string>
+    <string name="enable_incident_notifications">enable_incident_notifications</string>
+    <string name="enable_major_event_notifications">enable_major_event_notifications</string>
+    <string name="enable_roadwork_notifications">enable_roadwork_notifications</string>
+
 </resources>
