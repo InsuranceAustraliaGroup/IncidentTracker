@@ -35,11 +35,14 @@
             android:name=".ui.MapsActivity"
             android:label="@string/title_activity_maps"
             android:screenOrientation="portrait" />
+
         <activity
             android:name=".ui.PolylineDemoActivity"
             android:screenOrientation="portrait" />
+
         <activity android:name=".ui.SettingsActivity"
             android:screenOrientation="portrait" />
+
         <activity android:name=".ui.RouteListActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".ui.RecordRouteActivity"

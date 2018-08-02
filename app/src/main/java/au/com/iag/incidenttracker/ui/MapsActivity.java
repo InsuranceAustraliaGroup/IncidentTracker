@@ -11,6 +11,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -45,6 +46,9 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.maps.android.clustering.ClusterItem;
+import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.android.clustering.view.DefaultClusterRenderer;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -118,6 +122,8 @@ public class MapsActivity extends AppCompatActivity implements
                         if (location != null) {
                             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 12f));
                         }
+
+                        setUpClusterer();
                         getFeatures();
                     }
                 });
@@ -129,44 +135,38 @@ public class MapsActivity extends AppCompatActivity implements
 
             @Override
             public void onOpenAlpineHazardResponse(FeatureCollection featureCollection) {
-                for(Feature feature : featureCollection.getFeatures()) {
-                    addFeature(feature);
-                }
+//                addFeatures(featureCollection.getFeatures());
+                addClusterItems(featureCollection.getFeatures());
             }
 
             @Override
             public void onOpenFireHazardResponse(FeatureCollection featureCollection) {
-                for(Feature feature : featureCollection.getFeatures()) {
-                    addFeature(feature);
-                }
+//                addFeatures(featureCollection.getFeatures());
+                addClusterItems(featureCollection.getFeatures());
             }
 
             @Override
             public void onOpenFloodHazardResponse(FeatureCollection featureCollection) {
-                for(Feature feature : featureCollection.getFeatures()) {
-                    addFeature(feature);
-                }
+//                addFeatures(featureCollection.getFeatures());
+                addClusterItems(featureCollection.getFeatures());
             }
 
             @Override
             public void onOpenIncidentHazardResponse(FeatureCollection featureCollection) {
-                for(Feature feature : featureCollection.getFeatures()) {
-                    addFeature(feature);
-                }
+//                addFeatures(featureCollection.getFeatures());
+                addClusterItems(featureCollection.getFeatures());
             }
 
             @Override
             public void onOpenMajorEventHazardResponse(FeatureCollection featureCollection) {
-                for(Feature feature : featureCollection.getFeatures()) {
-                    addFeature(feature);
-                }
+//                addFeatures(featureCollection.getFeatures());
+                addClusterItems(featureCollection.getFeatures());
             }
 
             @Override
             public void onOpenRoadworkHazardResponse(FeatureCollection featureCollection) {
-                for(Feature feature : featureCollection.getFeatures()) {
-                    addFeature(feature);
-                }
+//                addFeatures(featureCollection.getFeatures());
+                addClusterItems(featureCollection.getFeatures());
             }
         });
     }
@@ -231,14 +231,62 @@ public class MapsActivity extends AppCompatActivity implements
                 .newInstance(true).show(getSupportFragmentManager(), "dialog");
     }
 
-    private void addFeature(Feature feature) {
+//    private void addFeatures(List<Feature> features) {
+//        for(Feature feature : features) {
+//
+//            BitmapDescriptor icon = feature.getFeatureType().getIcon(this);
+//
+//            Marker marker = mMap.addMarker(new MarkerOptions()
+//                    .position(feature.getGeometry().getLatLong())
+//                    .title(feature.getFeatureType().name())
+//                    .snippet(feature.getProperties().getHeadline())
+//                    .icon(icon));
+//        }
+//    }
 
-        BitmapDescriptor icon = feature.getFeatureType().getIcon(this);
+    // Declare a variable for the cluster manager.
+    private ClusterManager<MyItem> mClusterManager;
 
-        Marker marker = mMap.addMarker(new MarkerOptions()
-                .position(feature.getGeometry().getLatLong())
-                .title(feature.getFeatureType().name())
-                .snippet(feature.getProperties().getHeadline())
-                .icon(icon));
+    private void setUpClusterer() {
+
+        // Initialize the manager with the context and the map.
+        // (Activity extends context, so we can pass 'this' in the constructor.)
+        mClusterManager = new ClusterManager<MyItem>(this, mMap);
+
+        // Point the map's listeners at the listeners implemented by the cluster
+        // manager.
+        mMap.setOnCameraIdleListener(mClusterManager);
+        mMap.setOnMarkerClickListener(mClusterManager);
+
+
+
+        final CustomClusterRenderer renderer = new CustomClusterRenderer(MapsActivity.this, mMap, mClusterManager);
+        mClusterManager.setRenderer(renderer);
+    }
+
+    private void addClusterItems(List<Feature> features) {
+
+        for(Feature feature : features) {
+            MyItem offsetItem = new MyItem(feature);
+            mClusterManager.addItem(offsetItem);
+        }
+    }
+
+    public class CustomClusterRenderer extends DefaultClusterRenderer<MyItem> {
+
+        private final Context mContext;
+
+        public CustomClusterRenderer(Context context, GoogleMap map, ClusterManager<MyItem> clusterManager) {
+            super(context, map, clusterManager);
+
+            mContext = context;
+        }
+
+        @Override
+        protected void onBeforeClusterItemRendered(MyItem item, MarkerOptions markerOptions) {
+            BitmapDescriptor icon = item.getFeature().getFeatureType().getIcon(MapsActivity.this);
+            markerOptions.icon(icon);
+            markerOptions.icon(icon).title(item.getTitle()).snippet(item.getSnippet());
+        }
     }
 }
