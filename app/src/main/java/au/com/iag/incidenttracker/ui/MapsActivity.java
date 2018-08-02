@@ -1,4 +1,4 @@
-package au.com.iag.incidenttracker;
+package au.com.iag.incidenttracker.ui;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener;
@@ -14,6 +14,9 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
+
+import au.com.iag.incidenttracker.PermissionUtils;
+import au.com.iag.incidenttracker.R;
 
 public class MapsActivity extends AppCompatActivity implements
         OnMyLocationButtonClickListener,
