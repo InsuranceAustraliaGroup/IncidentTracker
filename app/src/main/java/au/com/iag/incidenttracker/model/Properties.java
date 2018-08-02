@@ -1,5 +1,7 @@
 package au.com.iag.incidenttracker.model;
 
+import java.util.List;
+
 public class Properties {
 
     String headline;
@@ -12,7 +14,9 @@ public class Properties {
 
     String otherAdvice;
 
-    public String getHeadline() {
+    List<WebLink> webLinks;
+
+    public String getHeadline()  {
         return headline;
     }
 
@@ -50,5 +54,13 @@ public class Properties {
 
     public void setOtherAdvice(String otherAdvice) {
         this.otherAdvice = otherAdvice;
+    }
+
+    public List<WebLink> getWebLinks() {
+        return webLinks;
+    }
+
+    public void setWebLinks(List<WebLink> webLinks) {
+        this.webLinks = webLinks;
     }
 }

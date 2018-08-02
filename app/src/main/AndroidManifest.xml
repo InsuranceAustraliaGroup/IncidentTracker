@@ -8,6 +8,7 @@
          location permissions for the 'MyLocation' functionality. 
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
         android:name=".IncidentTrackerApplication"
@@ -37,6 +38,9 @@
         <activity
             android:name=".ui.PolylineDemoActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".ui.SettingsActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ui.MainActivity"
         <activity
             android:name=".ui.MainActivity"
             android:screenOrientation="portrait">
@@ -52,6 +56,9 @@
             android:exported="false" />
 
         <activity android:name=".ui.MarkerDemoActivity"></activity>
+
+        <service android:name=".service.notification.NotificationService" android:exported="false"/>
+        <service android:name=".service.route.RouteRegistrationService" android:exported="false"/>
     </application>
 
 </manifest>

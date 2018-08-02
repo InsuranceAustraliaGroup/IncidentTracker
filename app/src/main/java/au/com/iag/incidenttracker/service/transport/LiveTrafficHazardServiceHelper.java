@@ -20,9 +20,11 @@ public class LiveTrafficHazardServiceHelper {
         call.enqueue(new Callback<FeatureCollection>() {
             @Override
             public void onResponse(Call<FeatureCollection> call, Response<FeatureCollection> response) {
-                for (Feature feature : response.body().getFeatures())
-                    feature.setFeatureType(FeatureType.ALPINE);
-                callback.onOpenAlpineHazardResponse(response.body());
+                if (response.body() != null) {
+                    for (Feature feature : response.body().getFeatures())
+                        feature.setFeatureType(FeatureType.ALPINE);
+                    callback.onOpenAlpineHazardResponse(response.body());
+                }
             }
 
             @Override
@@ -38,9 +40,11 @@ public class LiveTrafficHazardServiceHelper {
         call.enqueue(new Callback<FeatureCollection>() {
             @Override
             public void onResponse(Call<FeatureCollection> call, Response<FeatureCollection> response) {
-                for (Feature feature : response.body().getFeatures())
-                    feature.setFeatureType(FeatureType.FIRE);
-                callback.onOpenFireHazardResponse(response.body());
+                if (response.body() != null) {
+                    for (Feature feature : response.body().getFeatures())
+                        feature.setFeatureType(FeatureType.FIRE);
+                    callback.onOpenFireHazardResponse(response.body());
+                }
             }
 
             @Override
@@ -56,9 +60,11 @@ public class LiveTrafficHazardServiceHelper {
         call.enqueue(new Callback<FeatureCollection>() {
             @Override
             public void onResponse(Call<FeatureCollection> call, Response<FeatureCollection> response) {
-                for (Feature feature : response.body().getFeatures())
-                    feature.setFeatureType(FeatureType.FLOOD);
-                callback.onOpenFloodHazardResponse(response.body());
+                if (response.body() != null) {
+                    for (Feature feature : response.body().getFeatures())
+                        feature.setFeatureType(FeatureType.FLOOD);
+                    callback.onOpenFloodHazardResponse(response.body());
+                }
             }
 
             @Override
@@ -74,9 +80,11 @@ public class LiveTrafficHazardServiceHelper {
         call.enqueue(new Callback<FeatureCollection>() {
             @Override
             public void onResponse(Call<FeatureCollection> call, Response<FeatureCollection> response) {
-                for (Feature feature : response.body().getFeatures())
-                    feature.setFeatureType(FeatureType.INCIDENT);
-                callback.onOpenIncidentHazardResponse(response.body());
+                if (response.body() != null) {
+                    for (Feature feature : response.body().getFeatures())
+                        feature.setFeatureType(FeatureType.INCIDENT);
+                    callback.onOpenIncidentHazardResponse(response.body());
+                }
             }
 
             @Override
@@ -92,9 +100,11 @@ public class LiveTrafficHazardServiceHelper {
         call.enqueue(new Callback<FeatureCollection>() {
             @Override
             public void onResponse(Call<FeatureCollection> call, Response<FeatureCollection> response) {
-                for (Feature feature : response.body().getFeatures())
-                    feature.setFeatureType(FeatureType.MAJOR_EVENT);
-                callback.onOpenMajorEventHazardResponse(response.body());
+                if (response.body() != null) {
+                    for (Feature feature : response.body().getFeatures())
+                        feature.setFeatureType(FeatureType.MAJOR_EVENT);
+                    callback.onOpenMajorEventHazardResponse(response.body());
+                }
             }
 
             @Override
@@ -110,9 +120,11 @@ public class LiveTrafficHazardServiceHelper {
         call.enqueue(new Callback<FeatureCollection>() {
             @Override
             public void onResponse(Call<FeatureCollection> call, Response<FeatureCollection> response) {
-                for (Feature feature : response.body().getFeatures())
-                    feature.setFeatureType(FeatureType.ROADWORK);
-                callback.onOpenRoadworkHazardResponse(response.body());
+                if (response.body() != null) {
+                    for (Feature feature : response.body().getFeatures())
+                        feature.setFeatureType(FeatureType.ROADWORK);
+                    callback.onOpenRoadworkHazardResponse(response.body());
+                }
             }
 
             @Override

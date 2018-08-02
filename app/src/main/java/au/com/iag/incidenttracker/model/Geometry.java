@@ -11,4 +11,12 @@ public class Geometry {
     public LatLng getLatLong() {
         return new LatLng(coordinates.get(1), coordinates.get(0));
     }
+
+    public List<Double> getCoordinates() {
+        return coordinates;
+    }
+
+    public void setCoordinates(List<Double> coordinates) {
+        this.coordinates = coordinates;
+    }
 }
