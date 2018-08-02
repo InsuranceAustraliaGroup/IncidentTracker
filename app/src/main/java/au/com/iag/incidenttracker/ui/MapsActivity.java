@@ -1,5 +1,7 @@
 package au.com.iag.incidenttracker.ui;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
 import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener;
@@ -8,6 +10,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -20,6 +23,7 @@ import android.widget.Toast;
 import au.com.iag.incidenttracker.IncidentTrackerApplication;
 import au.com.iag.incidenttracker.PermissionUtils;
 import au.com.iag.incidenttracker.R;
+import au.com.iag.incidenttracker.Utils;
 import au.com.iag.incidenttracker.model.Feature;
 import au.com.iag.incidenttracker.model.FeatureCollection;
 import au.com.iag.incidenttracker.service.transport.LiveTrafficHazardServiceCallback;
@@ -40,6 +44,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -83,12 +88,7 @@ public class MapsActivity extends AppCompatActivity implements
     private static final int LOCATION_PERMISSION_REQUEST_CODE = 1;
     private boolean mPermissionDenied = false;
     private GoogleMap mMap;
-
-    Map<Feature, Marker> featureMarkerMap = new HashMap<>();
-
-    public IncidentTrackerApplication getAppApplication() {
-        return (IncidentTrackerApplication) getApplication();
-    }
+    private FusedLocationProviderClient mFusedLocationClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,47 +100,73 @@ public class MapsActivity extends AppCompatActivity implements
         mapFragment.getMapAsync(this);
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap map) {
         mMap = map;
 
+        mMap.getUiSettings().setZoomControlsEnabled(true);
         mMap.setOnMyLocationButtonClickListener(this);
         mMap.setOnMyLocationClickListener(this);
         enableMyLocation();
 
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+        mFusedLocationClient.getLastLocation()
+                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                    @Override
+                    public void onSuccess(Location location) {
+                        if (location != null) {
+                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 12f));
+                        }
+                        getFeatures();
+                    }
+                });
+    }
+
+    private void getFeatures() {
         LiveTrafficHazardServiceHelper liveTrafficHazardServiceHelper = new LiveTrafficHazardServiceHelper();
-        liveTrafficHazardServiceHelper.callFireHazardService(new LiveTrafficHazardServiceCallback() {
+        liveTrafficHazardServiceHelper.callTrafficHazardServices(new LiveTrafficHazardServiceCallback() {
 
             @Override
             public void onOpenAlpineHazardResponse(FeatureCollection featureCollection) {
-
+                for(Feature feature : featureCollection.getFeatures()) {
+                    addFeature(feature);
+                }
             }
 
             @Override
             public void onOpenFireHazardResponse(FeatureCollection featureCollection) {
-                if(!featureCollection.getFeatures().isEmpty()) {
-                    addFeature(featureCollection.getFeatures().get(0));
+                for(Feature feature : featureCollection.getFeatures()) {
+                    addFeature(feature);
                 }
             }
 
             @Override
             public void onOpenFloodHazardResponse(FeatureCollection featureCollection) {
-
+                for(Feature feature : featureCollection.getFeatures()) {
+                    addFeature(feature);
+                }
             }
 
             @Override
             public void onOpenIncidentHazardResponse(FeatureCollection featureCollection) {
-
+                for(Feature feature : featureCollection.getFeatures()) {
+                    addFeature(feature);
+                }
             }
 
             @Override
             public void onOpenMajorEventHazardResponse(FeatureCollection featureCollection) {
-
+                for(Feature feature : featureCollection.getFeatures()) {
+                    addFeature(feature);
+                }
             }
 
             @Override
             public void onOpenRoadworkHazardResponse(FeatureCollection featureCollection) {
-
+                for(Feature feature : featureCollection.getFeatures()) {
+                    addFeature(feature);
+                }
             }
         });
     }
@@ -206,13 +232,13 @@ public class MapsActivity extends AppCompatActivity implements
     }
 
     private void addFeature(Feature feature) {
+
+        BitmapDescriptor icon = feature.getFeatureType().getIcon(this);
+
         Marker marker = mMap.addMarker(new MarkerOptions()
                 .position(feature.getGeometry().getLatLong())
-                .title("Darwin Marker 1")
+                .title(feature.getFeatureType().name())
                 .snippet(feature.getProperties().getHeadline())
-                .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(feature.getGeometry().getLatLong()));
-        featureMarkerMap.put(feature, marker);
+                .icon(icon));
     }
 }

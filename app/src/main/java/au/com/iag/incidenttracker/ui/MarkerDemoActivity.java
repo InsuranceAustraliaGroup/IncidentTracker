@@ -319,7 +319,7 @@ public class MarkerDemoActivity extends AppCompatActivity implements
         // Vector drawable resource as a marker icon.
         mMap.addMarker(new MarkerOptions()
                 .position(ALICE_SPRINGS)
-                .icon(vectorToBitmap(R.drawable.ic_android, Color.parseColor("#A4C639")))
+                .icon(vectorToBitmap(R.drawable.icon_fire, Color.parseColor("#A4C639")))
                 .title("Alice Springs"));
 
         // Creates a marker rainbow demonstrating how to create default marker icons of different
