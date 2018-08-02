@@ -3,7 +3,9 @@ package au.com.iag.incidenttracker.service.transport;
 import android.util.Log;
 
 import au.com.iag.incidenttracker.InjectionBase;
+import au.com.iag.incidenttracker.model.Feature;
 import au.com.iag.incidenttracker.model.FeatureCollection;
+import au.com.iag.incidenttracker.model.FeatureType;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -18,6 +20,8 @@ public class LiveTrafficHazardServiceHelper {
         call.enqueue(new Callback<FeatureCollection>() {
             @Override
             public void onResponse(Call<FeatureCollection> call, Response<FeatureCollection> response) {
+                for (Feature feature : response.body().getFeatures())
+                    feature.setFeatureType(FeatureType.ALPINE);
                 callback.onOpenAlpineHazardResponse(response.body());
             }
 
@@ -34,6 +38,8 @@ public class LiveTrafficHazardServiceHelper {
         call.enqueue(new Callback<FeatureCollection>() {
             @Override
             public void onResponse(Call<FeatureCollection> call, Response<FeatureCollection> response) {
+                for (Feature feature : response.body().getFeatures())
+                    feature.setFeatureType(FeatureType.FIRE);
                 callback.onOpenFireHazardResponse(response.body());
             }
 
@@ -50,6 +56,8 @@ public class LiveTrafficHazardServiceHelper {
         call.enqueue(new Callback<FeatureCollection>() {
             @Override
             public void onResponse(Call<FeatureCollection> call, Response<FeatureCollection> response) {
+                for (Feature feature : response.body().getFeatures())
+                    feature.setFeatureType(FeatureType.FLOOD);
                 callback.onOpenFloodHazardResponse(response.body());
             }
 
@@ -66,6 +74,8 @@ public class LiveTrafficHazardServiceHelper {
         call.enqueue(new Callback<FeatureCollection>() {
             @Override
             public void onResponse(Call<FeatureCollection> call, Response<FeatureCollection> response) {
+                for (Feature feature : response.body().getFeatures())
+                    feature.setFeatureType(FeatureType.INCIDENT);
                 callback.onOpenIncidentHazardResponse(response.body());
             }
 
@@ -82,6 +92,8 @@ public class LiveTrafficHazardServiceHelper {
         call.enqueue(new Callback<FeatureCollection>() {
             @Override
             public void onResponse(Call<FeatureCollection> call, Response<FeatureCollection> response) {
+                for (Feature feature : response.body().getFeatures())
+                    feature.setFeatureType(FeatureType.MAJOR_EVENT);
                 callback.onOpenMajorEventHazardResponse(response.body());
             }
 
@@ -98,6 +110,8 @@ public class LiveTrafficHazardServiceHelper {
         call.enqueue(new Callback<FeatureCollection>() {
             @Override
             public void onResponse(Call<FeatureCollection> call, Response<FeatureCollection> response) {
+                for (Feature feature : response.body().getFeatures())
+                    feature.setFeatureType(FeatureType.ROADWORK);
                 callback.onOpenRoadworkHazardResponse(response.body());
             }
 
