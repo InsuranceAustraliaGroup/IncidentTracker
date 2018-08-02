@@ -28,14 +28,16 @@ import au.com.iag.incidenttracker.service.database.RouteQueryHelper;
 import au.com.iag.incidenttracker.service.route.RouteAlarmReceiver;
 import au.com.iag.incidenttracker.service.route.RouteRecordService;
 
-public class RouteAlarmActivity extends AppCompatActivity implements View.OnClickListener {
+public class RouteAlarmActivity extends BaseActivity implements View.OnClickListener {
 
     private RouteQueryHelper routeQueryHelper;
+    private Spinner spinner;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_alarm);
+        setupToolbar("Route Alarm", false);
 
         routeQueryHelper = new RouteQueryHelper(this);
         List<Route> routes = routeQueryHelper.getRoutes();
@@ -44,7 +46,7 @@ public class RouteAlarmActivity extends AppCompatActivity implements View.OnClic
             routeNames.add(route.getName());
         }
 
-        Spinner spinner = findViewById(R.id.route_spinner);
+        spinner = findViewById(R.id.route_spinner);
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, routeNames);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -58,15 +60,20 @@ public class RouteAlarmActivity extends AppCompatActivity implements View.OnClic
 
         AlarmManager alarmMgr = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(this, RouteAlarmReceiver.class);
+        intent.putExtra("ROUTE_NAME", (String)spinner.getSelectedItem());
         PendingIntent alarmIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
 
         TimePicker timePicker = findViewById(R.id.route_time_picker);
+        int hour = timePicker.getHour();
+        int minute = timePicker.getMinute();
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
-        calendar.set(Calendar.HOUR_OF_DAY, timePicker.getHour());
-        calendar.set(Calendar.MINUTE, timePicker.getMinute());
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
 
         alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), 1000 * 60 * 60 * 24, alarmIntent);
+
+        finish();
     }
 }

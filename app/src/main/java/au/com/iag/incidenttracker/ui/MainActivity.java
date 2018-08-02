@@ -2,79 +2,73 @@ package au.com.iag.incidenttracker.ui;
 
 import android.content.Intent;
 import android.preference.PreferenceManager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.GridView;
 
 import au.com.iag.incidenttracker.R;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
 
-    private static final String TAG = "Main";
+    GridView gridView;
+    GridViewMenuAdapter grisViewCustomeAdapter;
 
-    private boolean recording = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        PreferenceManager.setDefaultValues(this, R.xml.preferences, false);
+        setContentView(R.layout.activity_menu);
 
-        findViewById(R.id.map_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
-                startActivity(intent);
-            }
-        });
+        setupToolbar("Menu", true);
 
-        findViewById(R.id.route_map_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, PolylineDemoActivity.class);
-                startActivity(intent);
-            }
-        });
+        gridView=(GridView)findViewById(R.id.menu_grid_view);
+        // Create the Custom Adapter Object
+        grisViewCustomeAdapter = new GridViewMenuAdapter(this);
+        // Set the Adapter to GridView
+        gridView.setAdapter(grisViewCustomeAdapter);
 
-        findViewById(R.id.marker_map_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MarkerDemoActivity.class);
-                startActivity(intent);
-            }
-        });
+        // Handling touch/click Event on GridView Item
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
-        final Button recordButton = findViewById(R.id.route_record_button);
-        recordButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, RecordRouteActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        findViewById(R.id.route_list_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, RouteListActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        findViewById(R.id.route_alarm_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, RouteAlarmActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        findViewById(R.id.settings_button).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
-                startActivity(intent);
+            public void onItemClick(AdapterView<?> arg0, View v, int position, long arg3) {
+                Intent intent;
+                switch (position) {
+                    case 0:
+                        intent = new Intent(MainActivity.this, MapsActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 1:
+                        intent = new Intent(MainActivity.this, MarkerDemoActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 2:
+                        intent = new Intent(MainActivity.this, PolylineDemoActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 3:
+                        intent = new Intent(MainActivity.this, RecordRouteActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 4:
+                        intent = new Intent(MainActivity.this, RouteListActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 5:
+                        intent = new Intent(MainActivity.this, RouteAlarmActivity.class);
+                        startActivity(intent);
+                        break;
+                    case 6:
+                        intent = new Intent(MainActivity.this, SettingsActivity.class);
+                        startActivity(intent);
+                        break;
+                }
             }
         });
     }

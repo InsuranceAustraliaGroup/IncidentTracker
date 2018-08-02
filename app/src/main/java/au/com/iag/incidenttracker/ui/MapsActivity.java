@@ -82,7 +82,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class MapsActivity extends AppCompatActivity implements
+public class MapsActivity  extends BaseActivity implements
         OnMyLocationButtonClickListener,
         OnMyLocationClickListener,
         OnMapReadyCallback,
@@ -93,6 +93,8 @@ public class MapsActivity extends AppCompatActivity implements
     private boolean mPermissionDenied = false;
     private GoogleMap mMap;
     private FusedLocationProviderClient mFusedLocationClient;
+
+    public static final String EXTRA_LOCATION = "LOCATION";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,8 +116,15 @@ public class MapsActivity extends AppCompatActivity implements
         mMap.setOnMyLocationClickListener(this);
         enableMyLocation();
 
+
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        mFusedLocationClient.getLastLocation()
+        LatLng intentLocation = getIntent().getParcelableExtra(EXTRA_LOCATION);
+        if (intentLocation != null) {
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(intentLocation, 12f));
+            setUpClusterer();
+            getFeatures();
+        }
+        else mFusedLocationClient.getLastLocation()
                 .addOnSuccessListener(this, new OnSuccessListener<Location>() {
                     @Override
                     public void onSuccess(Location location) {

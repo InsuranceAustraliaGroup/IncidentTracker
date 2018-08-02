@@ -187,6 +187,9 @@ public class NotificationService extends Service implements GoogleApiClient.Conn
                 .setSmallIcon(R.mipmap.ic_launcher);
 
         Intent resultIntent = new Intent(this, MapsActivity.class);
+        if (feature.getGeometry() != null)
+            resultIntent.putExtra(MapsActivity.EXTRA_LOCATION, feature.getGeometry().getLatLong());
+
         PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         builder.setContentIntent(resultPendingIntent);
         builder.setAutoCancel(true);

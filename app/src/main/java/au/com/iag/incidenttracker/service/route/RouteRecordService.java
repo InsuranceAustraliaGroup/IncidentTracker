@@ -2,6 +2,8 @@ package au.com.iag.incidenttracker.service.route;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,6 +12,7 @@ import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -17,7 +20,11 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
+import au.com.iag.incidenttracker.R;
+import au.com.iag.incidenttracker.model.Feature;
 import au.com.iag.incidenttracker.service.database.RouteQueryHelper;
+import au.com.iag.incidenttracker.ui.MapsActivity;
+import au.com.iag.incidenttracker.ui.RecordRouteActivity;
 
 public class RouteRecordService extends Service implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
@@ -29,6 +36,9 @@ public class RouteRecordService extends Service implements GoogleApiClient.Conne
     private RouteQueryHelper routeQueryHelper;
     private String routeName;
     private Integer step = 0;
+
+    public static final String ACTION_START_FOREGROUND_SERVICE = "ACTION_START_FOREGROUND_SERVICE";
+    public static final String ACTION_STOP_FOREGROUND_SERVICE = "ACTION_STOP_FOREGROUND_SERVICE";
 
     // Service binder
     private final IBinder serviceBinder = new RunServiceBinder();
@@ -53,11 +63,20 @@ public class RouteRecordService extends Service implements GoogleApiClient.Conne
         if (Log.isLoggable(TAG, Log.VERBOSE)) {
             Log.v(TAG, "Starting service");
         }
-        if (!googleApiClient.isConnected())
-            googleApiClient.connect();
-        routeName = intent.getStringExtra("ROUTE_NAME");
-        routeQueryHelper.clearRoute(routeName);
-        return Service.START_STICKY;
+        switch (intent.getAction()) {
+            case ACTION_START_FOREGROUND_SERVICE:
+                if (!googleApiClient.isConnected())
+                    googleApiClient.connect();
+                routeName = intent.getStringExtra("ROUTE_NAME");
+                routeQueryHelper.clearRoute(routeName);
+                startForeground(1, createNotification());
+                break;
+            case ACTION_STOP_FOREGROUND_SERVICE:
+                stopForeground(true);
+                stopSelf();
+                break;
+        }
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
@@ -157,5 +176,19 @@ public class RouteRecordService extends Service implements GoogleApiClient.Conne
         public RouteRecordService getService() {
             return RouteRecordService.this;
         }
+    }
+
+    private Notification createNotification() {
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                .setContentTitle("Route record in progress")
+                .setContentText("You are currently recording a route. Click on this notification to complete the record.")
+                .setSmallIcon(R.mipmap.ic_launcher);
+
+        Intent resultIntent = new Intent(this, RecordRouteActivity.class);
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(resultPendingIntent);
+        builder.setAutoCancel(true);
+
+        return builder.build();
     }
 }

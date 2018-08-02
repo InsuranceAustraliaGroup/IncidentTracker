@@ -10,7 +10,7 @@ import au.com.iag.incidenttracker.R;
 import au.com.iag.incidenttracker.model.Route;
 import au.com.iag.incidenttracker.service.database.RouteQueryHelper;
 
-public class RouteListActivity extends Activity {
+public class RouteListActivity extends BaseActivity {
 
     private RouteQueryHelper routeQueryHelper;
 
@@ -18,6 +18,8 @@ public class RouteListActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_list);
+
+        setupToolbar("Routes", true);
 
         routeQueryHelper = new RouteQueryHelper(this);
 

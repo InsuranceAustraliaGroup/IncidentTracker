@@ -8,6 +8,14 @@
     android:orientation="vertical"
     android:gravity="center">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="?attr/colorPrimary"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.ActionBar"/>
+
     <TextView
         android:id="@+id/route_name_text_view"
         android:layout_width="200dp"
@@ -20,6 +28,15 @@
         android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:text="Record a route here. After pressing the button, a route will be recorded with the provided name. Press the button again when you reached your destination."/>
 
     <Button
         android:id="@+id/route_record_button"

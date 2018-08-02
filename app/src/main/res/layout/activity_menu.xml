@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainActivity"
-    android:orientation="vertical"
-    android:gravity="center">
+    tools:context=".ui.MainActivity" >
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -16,12 +13,13 @@
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"/>
 
-    <ListView
-        android:id="@+id/route_list"
-        android:layout_width="match_parent"
+    <GridView
+        android:id="@+id/menu_grid_view"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="map"
-        android:layout_margin="10dp"/>
+        android:layout_margin="4dp"
+        android:gravity="center"
+        android:numColumns="2"
+        android:stretchMode="columnWidth" />
 
-
-</LinearLayout>
+</RelativeLayout>
