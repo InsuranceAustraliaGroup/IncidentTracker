@@ -2,20 +2,14 @@ package au.com.iag.incidenttracker.service.route;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Binder;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -23,32 +17,64 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
-import java.util.Timer;
-import java.util.TimerTask;
+import au.com.iag.incidenttracker.service.database.RouteQueryHelper;
 
-import au.com.iag.incidenttracker.R;
-import au.com.iag.incidenttracker.model.Feature;
-import au.com.iag.incidenttracker.model.FeatureCollection;
-import au.com.iag.incidenttracker.service.database.LocationDbHelper;
-import au.com.iag.incidenttracker.service.transport.HazardManager;
-import au.com.iag.incidenttracker.service.transport.LiveTrafficHazardServiceCallback;
-import au.com.iag.incidenttracker.service.transport.LiveTrafficHazardServiceHelper;
-import au.com.iag.incidenttracker.ui.MapsActivity;
+public class RouteRecordService extends Service implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
 
-public class RouteRegistrationService extends Service implements GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, com.google.android.gms.location.LocationListener {
-
-    private static final String TAG = "RouteRegService";
+    private static final String TAG = "RouteRecService";
     
     private LocationRequest locationRequest;
     private Location previousLocation;
     private GoogleApiClient googleApiClient;
-    private LocationDbHelper locationDbHelper;
-
-    // Foreground notification id
-    private static final int NOTIFICATION_ID = 1;
+    private RouteQueryHelper routeQueryHelper;
+    private String routeName;
+    private Integer step = 0;
 
     // Service binder
     private final IBinder serviceBinder = new RunServiceBinder();
+
+
+    @Override
+    public void onCreate() {
+        if (Log.isLoggable(TAG, Log.VERBOSE)) {
+            Log.v(TAG, "Creating service");
+        }
+        routeQueryHelper = new RouteQueryHelper(this);
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .addOnConnectionFailedListener(this)
+                .addConnectionCallbacks(this)
+                .addApi(LocationServices.API)
+                .build();
+
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        if (Log.isLoggable(TAG, Log.VERBOSE)) {
+            Log.v(TAG, "Starting service");
+        }
+        if (!googleApiClient.isConnected())
+            googleApiClient.connect();
+        routeName = intent.getStringExtra("ROUTE_NAME");
+        routeQueryHelper.clearRoute(routeName);
+        return Service.START_STICKY;
+    }
+
+    @Override
+    public IBinder onBind(Intent intent) {
+        if (Log.isLoggable(TAG, Log.VERBOSE)) {
+            Log.v(TAG, "Binding service");
+        }
+        return serviceBinder;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (Log.isLoggable(TAG, Log.VERBOSE)) {
+            Log.v(TAG, "Destroying service");
+        }
+    }
 
     @Override
     public void onConnected(Bundle bundle) {
@@ -83,9 +109,11 @@ public class RouteRegistrationService extends Service implements GoogleApiClient
     public void onLocationChanged(Location location) {
         Log.i(TAG, "lat " + location.getLatitude());
         Log.i(TAG, "lng " + location.getLongitude());
-        
-        if (location.distanceTo(previousLocation) > 1000)
-            locationDbHelper.saveLocation(1, location);
+
+        if (previousLocation == null || location.distanceTo(previousLocation) > 1000) {
+            routeQueryHelper.saveLocation(routeName, step, location);
+            step++;
+        }
         previousLocation = location;
     }
 
@@ -126,47 +154,8 @@ public class RouteRegistrationService extends Service implements GoogleApiClient
     }
 
     public class RunServiceBinder extends Binder {
-        public RouteRegistrationService getService() {
-            return RouteRegistrationService.this;
-        }
-    }
-
-    @Override
-    public void onCreate() {
-        if (Log.isLoggable(TAG, Log.VERBOSE)) {
-            Log.v(TAG, "Creating service");
-        }
-        locationDbHelper = new LocationDbHelper(this);
-        googleApiClient = new GoogleApiClient.Builder(this)
-                .addOnConnectionFailedListener(this)
-                .addConnectionCallbacks(this)
-                .addApi(LocationServices.API)
-                .build();
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        if (Log.isLoggable(TAG, Log.VERBOSE)) {
-            Log.v(TAG, "Starting service");
-        }
-        if (!googleApiClient.isConnected())
-            googleApiClient.connect();
-        return Service.START_STICKY;
-    }
-
-    @Override
-    public IBinder onBind(Intent intent) {
-        if (Log.isLoggable(TAG, Log.VERBOSE)) {
-            Log.v(TAG, "Binding service");
-        }
-        return serviceBinder;
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        if (Log.isLoggable(TAG, Log.VERBOSE)) {
-            Log.v(TAG, "Destroying service");
+        public RouteRecordService getService() {
+            return RouteRecordService.this;
         }
     }
 }

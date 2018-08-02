@@ -14,6 +14,8 @@ public class HazardManager {
     public static boolean shouldNotifyHazard(Feature feature, int distance, Location currentLocation) {
         if (hazardIds.contains(feature.getId()))
             return false;
+        if (currentLocation == null)
+            return false;
         Location incidentLocation = new Location("");
         incidentLocation.setLongitude(feature.getGeometry().getCoordinates().get(0));
         incidentLocation.setLatitude(feature.getGeometry().getCoordinates().get(1));

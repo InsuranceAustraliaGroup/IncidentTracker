@@ -10,17 +10,21 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import au.com.iag.incidenttracker.R;
+import au.com.iag.incidenttracker.model.Route;
+import au.com.iag.incidenttracker.service.database.RouteQueryHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class RouteListAdapter extends BaseAdapter implements ListAdapter {
-    private List<String> list = new ArrayList<String>();
+    private List<Route> list = new ArrayList<Route>();
     private Context context;
+    private RouteQueryHelper routeQueryHelper;
 
-    public RouteListAdapter(List<String> list, Context context) {
+    public RouteListAdapter(List<Route> list, Context context, RouteQueryHelper routeQueryHelper) {
         this.list = list;
         this.context = context;
+        this.routeQueryHelper = routeQueryHelper;
     }
 
     @Override
@@ -49,7 +53,7 @@ public class RouteListAdapter extends BaseAdapter implements ListAdapter {
 
         //Handle TextView and display string from your list
         TextView listItemText = (TextView)view.findViewById(R.id.list_item_string);
-        listItemText.setText(list.get(position));
+        listItemText.setText(list.get(position).getName());
 
         //Handle buttons and add onClickListeners
         Button deleteBtn = (Button)view.findViewById(R.id.delete_btn);
@@ -58,7 +62,7 @@ public class RouteListAdapter extends BaseAdapter implements ListAdapter {
         deleteBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //do something
+                routeQueryHelper.clearRoute(list.get(position).getName());
                 list.remove(position); //or some other task
                 notifyDataSetChanged();
             }
