@@ -16,6 +16,7 @@ import java.util.TimerTask;
 import au.com.iag.incidenttracker.R;
 import au.com.iag.incidenttracker.model.Feature;
 import au.com.iag.incidenttracker.model.FeatureCollection;
+import au.com.iag.incidenttracker.service.transport.HazardManager;
 import au.com.iag.incidenttracker.service.transport.LiveTrafficHazardServiceCallback;
 import au.com.iag.incidenttracker.service.transport.LiveTrafficHazardServiceHelper;
 import au.com.iag.incidenttracker.ui.MapsActivity;
@@ -99,54 +100,55 @@ public class NotificationService extends Service {
         @Override
         public void run() {
 
-            liveTrafficHazardServiceHelper.callAlpineHazardService(this);
+            liveTrafficHazardServiceHelper.callIncidentHazardService(this);
         }
 
         @Override
         public void onOpenAlpineHazardResponse(FeatureCollection featureCollection) {
-
-            if (!featureCollection.getFeatures().isEmpty())
-                notificationManager.notify(NOTIFICATION_ID, createNotification(featureCollection.getFeatures().get(0)));
-            else
+            if (notifyHazards(featureCollection))
                 liveTrafficHazardServiceHelper.callFireHazardService(this);
         }
 
         @Override
         public void onOpenFireHazardResponse(FeatureCollection featureCollection) {
-            if (!featureCollection.getFeatures().isEmpty())
-                notificationManager.notify(NOTIFICATION_ID, createNotification(featureCollection.getFeatures().get(0)));
-            else
+            if (notifyHazards(featureCollection))
                 liveTrafficHazardServiceHelper.callFloodHazardService(this);
         }
 
         @Override
         public void onOpenFloodHazardResponse(FeatureCollection featureCollection) {
-            if (!featureCollection.getFeatures().isEmpty())
-                notificationManager.notify(NOTIFICATION_ID, createNotification(featureCollection.getFeatures().get(0)));
-            else
-                liveTrafficHazardServiceHelper.callIncidentHazardService(this);
+            if (notifyHazards(featureCollection))
+                liveTrafficHazardServiceHelper.callMajorEventHazardService(this);
         }
 
         @Override
         public void onOpenIncidentHazardResponse(FeatureCollection featureCollection) {
-            if (!featureCollection.getFeatures().isEmpty())
-                notificationManager.notify(NOTIFICATION_ID, createNotification(featureCollection.getFeatures().get(0)));
-            else
-                liveTrafficHazardServiceHelper.callMajorEventHazardService(this);
+            if (notifyHazards(featureCollection))
+                liveTrafficHazardServiceHelper.callAlpineHazardService(this);
         }
 
         @Override
         public void onOpenMajorEventHazardResponse(FeatureCollection featureCollection) {
-            if (!featureCollection.getFeatures().isEmpty())
-                notificationManager.notify(NOTIFICATION_ID, createNotification(featureCollection.getFeatures().get(0)));
-            else
-                liveTrafficHazardServiceHelper.callMajorEventHazardService(this);
+            if (notifyHazards(featureCollection))
+                liveTrafficHazardServiceHelper.callRoadworkHazardService(this);
         }
 
         @Override
         public void onOpenRoadworkHazardResponse(FeatureCollection featureCollection) {
             if (!featureCollection.getFeatures().isEmpty())
                 notificationManager.notify(NOTIFICATION_ID, createNotification(featureCollection.getFeatures().get(0)));
+        }
+
+        private boolean notifyHazards(FeatureCollection featureCollection) {
+
+            for (Feature feature : featureCollection.getFeatures()) {
+                if (HazardManager.shouldNotifyHazard(feature)) {
+                    notificationManager.notify(feature.getId(), createNotification(feature));
+                    HazardManager.hazardNotified(feature);
+                    return false;
+                }
+            }
+            return true;
         }
     }
 }
