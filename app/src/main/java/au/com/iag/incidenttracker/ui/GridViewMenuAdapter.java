@@ -23,7 +23,7 @@ public class GridViewMenuAdapter extends ArrayAdapter {
 
     public int getCount()
     {
-        return 7;
+        return 6;
     }
 
     @Override
