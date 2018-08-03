@@ -45,6 +45,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.maps.android.clustering.ClusterItem;
 import com.google.maps.android.clustering.ClusterManager;
@@ -137,6 +139,8 @@ public class MapsActivity  extends BaseActivity implements
                     }
                 });
     }
+
+
 
     private void getFeatures() {
         LiveTrafficHazardServiceHelper liveTrafficHazardServiceHelper = new LiveTrafficHazardServiceHelper();
@@ -297,5 +301,21 @@ public class MapsActivity  extends BaseActivity implements
             markerOptions.icon(icon);
             markerOptions.icon(icon).title(item.getTitle()).snippet(item.getSnippet());
         }
+    }
+
+    public void showRoute() {
+        // Add polylines and polygons to the map. This section shows just
+        // a single polyline. Read the rest of the tutorial to learn more.
+        Polyline polyline1 = mMap.addPolyline(new PolylineOptions()
+                .clickable(true)
+                .add(
+                        new LatLng(-33.872991, 151.204110),
+                        new LatLng(-33.872808, 151.204501),
+                        new LatLng(-33.872732, 151.205064),
+                        new LatLng(-33.870978, 151.204840),
+                        new LatLng(-33.870920, 151.205152),
+                        new LatLng(-33.870880, 151.205507),
+                        new LatLng(-33.870755, 151.206950),
+                        new LatLng(-33.868685, 151.206906)));
     }
 }
