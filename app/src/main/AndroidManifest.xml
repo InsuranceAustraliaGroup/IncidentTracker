@@ -33,27 +33,29 @@
 
         <activity
             android:name=".ui.MapsActivity"
-            android:parentActivityName=".ui.MainActivity"
-            android:launchMode="singleInstance"
             android:label="@string/title_activity_maps"
+            android:launchMode="singleInstance"
+            android:parentActivityName=".ui.MainActivity"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.PolylineDemoActivity"
             android:parentActivityName=".ui.MainActivity"
             android:screenOrientation="portrait" />
-
-        <activity android:name=".ui.SettingsActivity"
+        <activity
+            android:name=".ui.SettingsActivity"
             android:parentActivityName=".ui.MainActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.RouteListActivity"
+        <activity
+            android:name=".ui.RouteListActivity"
             android:parentActivityName=".ui.MainActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.RecordRouteActivity"
-            android:parentActivityName=".ui.MainActivity"
+        <activity
+            android:name=".ui.RecordRouteActivity"
             android:launchMode="singleInstance"
+            android:parentActivityName=".ui.MainActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ui.RouteAlarmActivity"
+        <activity
+            android:name=".ui.RouteAlarmActivity"
             android:parentActivityName=".ui.MainActivity"
             android:screenOrientation="portrait" />
         <activity
@@ -70,10 +72,16 @@
             android:name=".service.notification.NotificationService"
             android:exported="false" />
 
-        <activity android:name=".ui.MarkerDemoActivity"></activity>
+        <activity android:name=".ui.MarkerDemoActivity" />
 
-        <service android:name=".service.notification.NotificationService" android:exported="false"/>
-        <service android:name=".service.route.RouteRecordService" android:exported="false"/>
+        <service
+            android:name=".service.notification.NotificationService"
+            android:exported="false" />
+        <service
+            android:name=".service.route.RouteRecordService"
+            android:exported="false" />
+
+        <activity android:name=".ui.HazardHistoryActivity"></activity>
     </application>
 
 </manifest>

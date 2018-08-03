@@ -1,8 +1,10 @@
 package au.com.iag.incidenttracker.ui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -11,6 +13,8 @@ import java.util.List;
 import au.com.iag.incidenttracker.R;
 import au.com.iag.incidenttracker.model.Route;
 import au.com.iag.incidenttracker.service.database.RouteQueryHelper;
+
+import static au.com.iag.incidenttracker.ui.MapsActivity.EXTRA_SHOW_ROUTE;
 
 public class RouteListActivity extends BaseActivity {
 
@@ -39,6 +43,14 @@ public class RouteListActivity extends BaseActivity {
             //instantiate custom adapter
             RouteListAdapter adapter = new RouteListAdapter(list, this, routeQueryHelper);
             listView.setAdapter(adapter);
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                    Intent intent = new Intent(RouteListActivity.this, MapsActivity.class);
+                    intent.putExtra(EXTRA_SHOW_ROUTE, id%2);
+                    startActivity(intent);
+                }
+            });
         }
     }
 }
