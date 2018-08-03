@@ -1,14 +1,5 @@
 package au.com.iag.incidenttracker.ui;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
-import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -18,10 +9,25 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-import au.com.iag.incidenttracker.IncidentTrackerApplication;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnMyLocationButtonClickListener;
+import com.google.android.gms.maps.GoogleMap.OnMyLocationClickListener;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.maps.android.clustering.ClusterManager;
+import com.google.maps.android.clustering.view.DefaultClusterRenderer;
+
+import java.util.List;
+
 import au.com.iag.incidenttracker.PermissionUtils;
 import au.com.iag.incidenttracker.R;
 import au.com.iag.incidenttracker.Utils;
@@ -29,60 +35,6 @@ import au.com.iag.incidenttracker.model.Feature;
 import au.com.iag.incidenttracker.model.FeatureCollection;
 import au.com.iag.incidenttracker.service.transport.LiveTrafficHazardServiceCallback;
 import au.com.iag.incidenttracker.service.transport.LiveTrafficHazardServiceHelper;
-
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMap.InfoWindowAdapter;
-import com.google.android.gms.maps.GoogleMap.OnInfoWindowClickListener;
-import com.google.android.gms.maps.GoogleMap.OnInfoWindowCloseListener;
-import com.google.android.gms.maps.GoogleMap.OnInfoWindowLongClickListener;
-import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
-import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.Polyline;
-import com.google.android.gms.maps.model.PolylineOptions;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.maps.android.clustering.ClusterItem;
-import com.google.maps.android.clustering.ClusterManager;
-import com.google.maps.android.clustering.view.DefaultClusterRenderer;
-
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.os.Handler;
-import android.os.SystemClock;
-import android.support.annotation.ColorInt;
-import android.support.annotation.DrawableRes;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v7.app.AppCompatActivity;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
-import android.view.View;
-import android.view.animation.BounceInterpolator;
-import android.view.animation.Interpolator;
-import android.widget.CheckBox;
-import android.widget.ImageView;
-import android.widget.RadioGroup;
-import android.widget.RadioGroup.OnCheckedChangeListener;
-import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
 
 public class MapsActivity extends BaseActivity implements
         OnMyLocationButtonClickListener,
@@ -97,6 +49,9 @@ public class MapsActivity extends BaseActivity implements
     private FusedLocationProviderClient mFusedLocationClient;
 
     public static final String EXTRA_LOCATION = "LOCATION";
+    public static final String EXTRA_SHOW_ROUTE = "SHOW_ROUTE";
+    public static final int _201_TO_388 = 0;
+    public static final int _201_TO_CENTRAL = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,29 +73,36 @@ public class MapsActivity extends BaseActivity implements
         mMap.setOnMyLocationClickListener(this);
         enableMyLocation();
 
-
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
         LatLng intentLocation = getIntent().getParcelableExtra(EXTRA_LOCATION);
-        if (intentLocation != null) {
+        int routToShow = getIntent().getIntExtra(EXTRA_SHOW_ROUTE, -1);
+
+        if(routToShow == _201_TO_388) {
+            Utils.show201to388Route(mMap);
+
+        } else if(routToShow == _201_TO_CENTRAL) {
+            Utils.show201toCentralStationRoute(mMap);
+
+        } else if (intentLocation != null) {
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(intentLocation, 12f));
             setUpClusterer();
             getFeatures();
-        }
-        else mFusedLocationClient.getLastLocation()
-                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        if (location != null) {
-                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 12f));
+
+        } else {
+            mFusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            if (location != null) {
+                                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 12f));
+                            }
+
+                            setUpClusterer();
+                            getFeatures();
                         }
-
-                        setUpClusterer();
-                        getFeatures();
-                    }
-                });
+                    });
+        }
     }
-
-
 
     private void getFeatures() {
         LiveTrafficHazardServiceHelper liveTrafficHazardServiceHelper = new LiveTrafficHazardServiceHelper();
@@ -272,14 +234,13 @@ public class MapsActivity extends BaseActivity implements
         mMap.setOnMarkerClickListener(mClusterManager);
 
 
-
         final CustomClusterRenderer renderer = new CustomClusterRenderer(MapsActivity.this, mMap, mClusterManager);
         mClusterManager.setRenderer(renderer);
     }
 
     private void addClusterItems(List<Feature> features) {
 
-        for(Feature feature : features) {
+        for (Feature feature : features) {
             MyItem offsetItem = new MyItem(feature);
             mClusterManager.addItem(offsetItem);
         }
@@ -301,21 +262,5 @@ public class MapsActivity extends BaseActivity implements
             markerOptions.icon(icon);
             markerOptions.icon(icon).title(item.getTitle()).snippet(item.getSnippet());
         }
-    }
-
-    public void showRoute() {
-        // Add polylines and polygons to the map. This section shows just
-        // a single polyline. Read the rest of the tutorial to learn more.
-        Polyline polyline1 = mMap.addPolyline(new PolylineOptions()
-                .clickable(true)
-                .add(
-                        new LatLng(-33.872991, 151.204110),
-                        new LatLng(-33.872808, 151.204501),
-                        new LatLng(-33.872732, 151.205064),
-                        new LatLng(-33.870978, 151.204840),
-                        new LatLng(-33.870920, 151.205152),
-                        new LatLng(-33.870880, 151.205507),
-                        new LatLng(-33.870755, 151.206950),
-                        new LatLng(-33.868685, 151.206906)));
     }
 }

@@ -46,7 +46,7 @@ public class GridViewMenuAdapter extends ArrayAdapter {
                     imageViewIte.setImageResource(R.drawable.icon_hazard);
                     break;
                 case 1:
-                    textViewTitle.setText("View route map");
+                    textViewTitle.setText("Hazard history");
                     imageViewIte.setImageResource(R.drawable.icon_map_route);
                     break;
                 case 2:
