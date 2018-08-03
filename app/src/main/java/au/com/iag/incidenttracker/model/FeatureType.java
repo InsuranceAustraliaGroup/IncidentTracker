@@ -11,7 +11,7 @@ import au.com.iag.incidenttracker.Utils;
 public enum FeatureType {
     FIRE(R.drawable.icon_fire, Color.parseColor("#ff6600")),
     FLOOD(R.drawable.icon_flood, Color.parseColor("#0000ff")),
-    INCIDENT(R.drawable.icon_car, Color.parseColor("#009933")),
+    INCIDENT(R.drawable.icon_car, Color.parseColor("#990000")),
     MAJOR_EVENT(R.drawable.icon_majorevent, Color.parseColor("#000000")),
     ALPINE(R.drawable.icon_alpine, Color.parseColor("#5c85d6")),
     ROADWORK(R.drawable.icon_roadwork, Color.parseColor("#996633"));
