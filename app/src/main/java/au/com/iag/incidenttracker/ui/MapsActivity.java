@@ -84,7 +84,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-public class MapsActivity  extends BaseActivity implements
+public class MapsActivity extends BaseActivity implements
         OnMyLocationButtonClickListener,
         OnMyLocationClickListener,
         OnMapReadyCallback,

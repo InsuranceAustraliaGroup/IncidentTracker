@@ -2,7 +2,9 @@ package au.com.iag.incidenttracker.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -19,18 +21,24 @@ public class RouteListActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_route_list);
 
-        setupToolbar("Routes", true);
+        setupToolbar("Routes", false);
 
         routeQueryHelper = new RouteQueryHelper(this);
 
         //generate list
         List<Route> list = routeQueryHelper.getRoutes();
 
-        //instantiate custom adapter
-        RouteListAdapter adapter = new RouteListAdapter(list, this, routeQueryHelper);
-
         //handle listview and assign adapter
         ListView listView = findViewById(R.id.route_list);
-        listView.setAdapter(adapter);
+        TextView textView = findViewById(R.id.route_text_view);
+
+        if (list.isEmpty()) {
+            listView.setVisibility(View.GONE);
+        } else {
+            textView.setVisibility(View.GONE);
+            //instantiate custom adapter
+            RouteListAdapter adapter = new RouteListAdapter(list, this, routeQueryHelper);
+            listView.setAdapter(adapter);
+        }
     }
 }

@@ -2,5 +2,66 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#d6f5f6</color>
+
+    <color name="dark_cerulean">#004b86</color>
+    <color name="white">#ffffff</color>
+    <color name="white_10_opacity">#1Affffff</color>
+    <color name="white_25_opacity">#40ffffff</color>
+    <color name="white_38_opacity">#61ffffff</color>
+    <color name="white_40_opacity">#66ffffff</color>
+    <color name="white_60_opacity">#99ffffff</color>
+    <color name="white_smoke">#f7f7f7</color>
+    <color name="black">#000000</color>
+    <color name="black_10_opacity">#1A000000</color>
+    <color name="black_20_opacity">#33000000</color>
+    <color name="black_30_opacity">#4d000000</color>
+    <color name="black_40_opacity">#64000000</color>
+    <color name="black_60_opacity">#99000000</color>
+    <color name="outerspace">#414042</color>
+    <color name="manatee">#979797</color>
+    <color name="smalt">#00338d</color>
+    <color name="smalt_50_opacity">#8000338d</color>
+    <color name="light_cyan">#d6f5f6</color>
+    <color name="dimgray">#666666</color>
+    <color name="medium_jungle_green">#1c2e36</color>
+    <color name="timberwolf">#d8d8d8</color>
+    <color name="munsell">#f1f1f1</color>
+    <color name="munsell_60_opacity">#99f1f1f1</color>
+    <color name="platinum">#e5e5e5</color>
+    <color name="moonstone_blue">#6e9ebd</color>
+    <color name="harvard_crimson">#d0011b</color>
+    <color name="robins_egg_blue">#13d0ca</color>
+    <color name="light_sea_green">#25b5b9</color>
+    <color name="kelly_green">#59b51f</color>
+    <color name="boston_university_red">#ce0005</color>
+    <color name="isabelline">#eeeeee</color>
+    <color name="pastel_gray">#cccccc</color>
+    <color name="dark_orange">#fd8204</color>
+    <color name="rosso_corsa">#da0000</color>
+    <color name="olive_drab">#5da623</color>
+    <color name="medium_turquoise">#5bc0de</color>
+    <color name="Manatee">#999999</color>
+    <color name="Gainsboro">#ffdadada</color>
+    <color name="liver">#505053</color>
+    <color name="red">#ff0000</color>
+    <color name="snow">#fafafa</color>
+    <color name="davy_gray">#545454</color>
+    <color name="Napier_green">#ff417505</color>
+    <color name="ash_grey">#b7b7b7</color>
+
+    <color name="policydetails_grey_background">@color/platinum</color>
+    <color name="hint_color">#42000000</color>
+    <color name="brand_danger">@color/rosso_corsa</color>
+    <color name="brand_warning">@color/dark_orange</color>
+    <color name="brand_info">@color/medium_turquoise</color>
+
+    <color name="grey_light">#d1d1d1</color>
+
+    <color name="spinner_gradient_start">@color/light_sea_green</color>
+    <color name="spinner_gradient_end">@color/smalt</color>
+
+    <color name="policy_details_gradient_start">@color/light_sea_green</color>
+    <color name="policy_details_gradient_end">@color/smalt</color>
+    <color name="policy_expired_alpha_mask">#96ffffff</color>
 </resources>
