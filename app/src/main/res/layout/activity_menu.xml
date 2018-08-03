@@ -17,12 +17,12 @@
         android:id="@+id/menu_grid_view"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp"
         android:gravity="center"
         android:horizontalSpacing="10dp"
         android:verticalSpacing="10dp"
         android:numColumns="2"
         android:stretchMode="columnWidth"
-        android:layout_below="@id/toolbar"/>
+        android:layout_below="@id/toolbar"
+        android:layout_margin="20dp"/>
 
 </RelativeLayout>
