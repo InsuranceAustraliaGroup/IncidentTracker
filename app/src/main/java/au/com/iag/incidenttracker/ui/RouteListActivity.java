@@ -43,14 +43,6 @@ public class RouteListActivity extends BaseActivity {
             //instantiate custom adapter
             RouteListAdapter adapter = new RouteListAdapter(list, this, routeQueryHelper);
             listView.setAdapter(adapter);
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Intent intent = new Intent(RouteListActivity.this, MapsActivity.class);
-                    intent.putExtra(EXTRA_SHOW_ROUTE, id%2);
-                    startActivity(intent);
-                }
-            });
         }
     }
 }

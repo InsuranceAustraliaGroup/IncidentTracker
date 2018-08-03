@@ -1,6 +1,7 @@
 package au.com.iag.incidenttracker.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,14 +17,16 @@ import au.com.iag.incidenttracker.service.database.RouteQueryHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+import static au.com.iag.incidenttracker.ui.MapsActivity.EXTRA_SHOW_ROUTE;
+
 public class RouteListAdapter extends BaseAdapter implements ListAdapter {
     private List<Route> list = new ArrayList<Route>();
-    private Context context;
+    private RouteListActivity activity;
     private RouteQueryHelper routeQueryHelper;
 
-    public RouteListAdapter(List<Route> list, Context context, RouteQueryHelper routeQueryHelper) {
+    public RouteListAdapter(List<Route> list, RouteListActivity activity, RouteQueryHelper routeQueryHelper) {
         this.list = list;
-        this.context = context;
+        this.activity = activity;
         this.routeQueryHelper = routeQueryHelper;
     }
 
@@ -47,7 +50,7 @@ public class RouteListAdapter extends BaseAdapter implements ListAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         View view = convertView;
         if (view == null) {
-            LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater inflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             view = inflater.inflate(R.layout.route_item, null);
         }
 
@@ -57,7 +60,7 @@ public class RouteListAdapter extends BaseAdapter implements ListAdapter {
 
         //Handle buttons and add onClickListeners
         Button deleteBtn = (Button)view.findViewById(R.id.delete_btn);
-        Button addBtn = (Button)view.findViewById(R.id.view_btn);
+        Button viewBtn = (Button)view.findViewById(R.id.view_btn);
 
         deleteBtn.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -67,11 +70,12 @@ public class RouteListAdapter extends BaseAdapter implements ListAdapter {
                 notifyDataSetChanged();
             }
         });
-        addBtn.setOnClickListener(new View.OnClickListener(){
+        viewBtn.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
-                //do something
-                notifyDataSetChanged();
+                Intent intent = new Intent(activity, MapsActivity.class);
+                intent.putExtra(EXTRA_SHOW_ROUTE, position % 2);
+                activity.startActivity(intent);
             }
         });
 
