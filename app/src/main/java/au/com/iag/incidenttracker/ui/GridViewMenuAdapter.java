@@ -43,31 +43,27 @@ public class GridViewMenuAdapter extends ArrayAdapter {
             switch(position) {
                 case 0:
                     textViewTitle.setText("View hazard map");
-                    imageViewIte.setImageResource(R.drawable.amu_bubble_mask);
+                    imageViewIte.setImageResource(R.drawable.icon_hazard);
                     break;
                 case 1:
-                    textViewTitle.setText("View marker map");
-                    imageViewIte.setImageResource(R.drawable.amu_bubble_mask);
+                    textViewTitle.setText("View route map");
+                    imageViewIte.setImageResource(R.drawable.icon_map_route);
                     break;
                 case 2:
-                    textViewTitle.setText("View route map");
-                    imageViewIte.setImageResource(R.drawable.amu_bubble_mask);
+                    textViewTitle.setText("Record route");
+                    imageViewIte.setImageResource(R.drawable.icon_record_route);
                     break;
                 case 3:
-                    textViewTitle.setText("Record route");
-                    imageViewIte.setImageResource(R.drawable.amu_bubble_mask);
+                    textViewTitle.setText("Manage routes");
+                    imageViewIte.setImageResource(R.drawable.icon_manage_route);
                     break;
                 case 4:
-                    textViewTitle.setText("Manage routes");
-                    imageViewIte.setImageResource(R.drawable.amu_bubble_mask);
+                    textViewTitle.setText("Set route alarm");
+                    imageViewIte.setImageResource(R.drawable.icon_alarm);
                     break;
                 case 5:
-                    textViewTitle.setText("Set route alarm");
-                    imageViewIte.setImageResource(R.drawable.amu_bubble_mask);
-                    break;
-                case 6:
                     textViewTitle.setText("Settings");
-                    imageViewIte.setImageResource(R.drawable.amu_bubble_mask);
+                    imageViewIte.setImageResource(R.drawable.icon_settings);
                     break;
             }
         }

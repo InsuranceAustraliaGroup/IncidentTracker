@@ -20,6 +20,8 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_marginRight="5dp"
+        android:elevation="4dp"
+        android:background="@drawable/background_button_rounded_blue"
         android:text="Delete" />
 
     <Button
@@ -29,6 +31,8 @@
         android:layout_toLeftOf="@id/delete_btn"
         android:layout_centerVertical="true"
         android:layout_marginRight="10dp"
+        android:elevation="4dp"
+        android:background="@drawable/background_button_rounded_stroke_blue"
         android:text="View" />
 
 </RelativeLayout>

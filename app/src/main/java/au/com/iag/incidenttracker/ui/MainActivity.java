@@ -45,26 +45,22 @@ public class MainActivity extends BaseActivity {
                         startActivity(intent);
                         break;
                     case 1:
-                        intent = new Intent(MainActivity.this, MarkerDemoActivity.class);
-                        startActivity(intent);
-                        break;
-                    case 2:
                         intent = new Intent(MainActivity.this, PolylineDemoActivity.class);
                         startActivity(intent);
                         break;
-                    case 3:
+                    case 2:
                         intent = new Intent(MainActivity.this, RecordRouteActivity.class);
                         startActivity(intent);
                         break;
-                    case 4:
+                    case 3:
                         intent = new Intent(MainActivity.this, RouteListActivity.class);
                         startActivity(intent);
                         break;
-                    case 5:
+                    case 4:
                         intent = new Intent(MainActivity.this, RouteAlarmActivity.class);
                         startActivity(intent);
                         break;
-                    case 6:
+                    case 5:
                         intent = new Intent(MainActivity.this, SettingsActivity.class);
                         startActivity(intent);
                         break;
