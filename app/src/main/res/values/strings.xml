@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">IncidentTracker</string>
+    <string name="app_name">Mr Alert</string>
     <string name="title_activity_maps">Map</string>
 
     <string name="hue">Hue</string>

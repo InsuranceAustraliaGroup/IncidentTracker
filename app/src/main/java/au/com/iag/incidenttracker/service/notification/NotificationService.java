@@ -181,10 +181,11 @@ public class NotificationService extends Service implements GoogleApiClient.Conn
      * @return a notification for interacting with the service when in the foreground
      */
     private Notification createNotification(Feature feature) {
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setContentTitle(feature.getProperties().getHeadline())
                 .setContentText(feature.getProperties().getAdviceA())
-                .setSmallIcon(R.mipmap.ic_launcher);
+                .setSmallIcon(feature.getFeatureType().getIconRessource());
 
         Intent resultIntent = new Intent(this, MapsActivity.class);
         if (feature.getGeometry() != null)

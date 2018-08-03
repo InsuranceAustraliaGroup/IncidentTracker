@@ -26,6 +26,10 @@ public enum FeatureType {
         this.color = color;
     }
 
+    public int getIconRessource() {
+        return icon;
+    }
+
     public BitmapDescriptor getIcon(Activity activity) {
         if(bitmap == null) {
             bitmap = Utils.vectorToBitmap(activity, icon, color);
